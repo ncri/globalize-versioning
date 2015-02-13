@@ -16,16 +16,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.rubyforge_project = 'globalize-versioning'
 
-  # only test against Rails >= 3.2
-  if ENV['RAILS_3']
-    s.add_dependency 'activerecord', '~> 3.2.0'
-    s.add_dependency 'activemodel', '~> 3.2.0'
-    s.add_dependency 'globalize', '~> 3.0.4'
-  elsif ENV['RAILS_4']
-    s.add_dependency 'globalize', '~> 4.0.0'
-  else
-    s.add_dependency 'globalize', '>= 3.0.4', '< 5'
-  end
+  s.add_dependency 'globalize', '>= 3.0.4'
 
   s.add_dependency 'paper_trail',  '~> 3.0.0'
 

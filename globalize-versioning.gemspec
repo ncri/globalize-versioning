@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'globalize', '>= 3.0.4'
 
-  s.add_dependency 'paper_trail',  '~> 3.0.0'
+  s.add_dependency 'paper_trail',  '>= 3.0.0'
 
   s.add_development_dependency 'database_cleaner', '>= 1.2.0'
   s.add_development_dependency 'minitest', '~> 4'

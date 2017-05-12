@@ -4,9 +4,10 @@ module Globalize::Versioning
   autoload :PaperTrail, 'globalize/versioning/paper_trail'
 end
 
-Globalize::ActiveRecord::ActMacro.module_eval do
-  def setup_translates_with_versioning!(options)
-    setup_translates_without_versioning!(options)
+
+module Globalize::ActiveRecord::ActMacroExtension
+  def setup_translates!(options)
+    super(options)
 
     if options[:versioning]
 
@@ -22,6 +23,8 @@ Globalize::ActiveRecord::ActMacro.module_eval do
       end
     end
   end
+end
 
-  alias_method_chain :setup_translates!, :versioning
+Globalize::ActiveRecord::ActMacro.module_eval do
+  prepend Globalize::ActiveRecord::ActMacroExtension
 end

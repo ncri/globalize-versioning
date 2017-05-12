@@ -12,22 +12,31 @@ module Globalize
   end
 end
 
+module Globalize::Versioning::PaperTrailExtensions
+  def has_paper_trail(*args)
+    super(*args)
+    include Globalize::Versioning::PaperTrail
+  end
+end
+
 ActiveRecord::Base.class_eval do
   class << self
-    def has_paper_trail_with_globalize(*args)
-      has_paper_trail_without_globalize(*args)
-      include Globalize::Versioning::PaperTrail
-    end
-    alias_method_chain :has_paper_trail, :globalize
+    prepend Globalize::Versioning::PaperTrailExtensions
   end
 end
 
 # to handle different versions of paper_trail
 # version_class = PaperTrail::VERSION.is_a?(String) ? Version : PaperTrail::Version
-version_class = PaperTrail::Version
 
-version_class.class_eval do
 
+module PaperTrail::VersionExtensions
+  def sibling_versions
+    super.for_this_locale
+  end
+end
+
+
+PaperTrail::Version.class_eval do
   before_save do |version|
     version.locale = Globalize.locale.to_s
   end
@@ -36,8 +45,5 @@ version_class.class_eval do
     where :locale => Globalize.locale.to_s
   end
 
-  def sibling_versions_with_locales
-    sibling_versions_without_locales.for_this_locale
-  end
-  alias_method_chain :sibling_versions, :locales
+  prepend PaperTrail::VersionExtensions
 end
